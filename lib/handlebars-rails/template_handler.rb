@@ -10,7 +10,7 @@ module Handlebars
       handler = ::Handlebars::TemplateHandler
       handlebars = handler.handlebars
       handler.with_view(self) do
-        handlebars.compile(#{template.source.inspect}).call(assigns).force_encoding(Encoding.default_external).html_safe
+        handlebars.compile(#{template.source.inspect}).call(local_assigns).force_encoding(Encoding.default_external).html_safe
       end
     }
   end

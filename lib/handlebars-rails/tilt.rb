@@ -13,22 +13,14 @@ module Handlebars
     def evaluate(scope, locals, &block)
       scope.extend Scope
       hbsc = Handlebars::TemplateHandler.handlebars.precompile data
-      if scope.partial?
-        <<-JS
-        ;(function() {
-          var template = Handlebars.template
-          Handlebars.registerPartial('#{scope.partial_name}', template(#{hbsc}));
-        })()
-        JS
-      else
-        <<-JS
-        ;(function() {
-          var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
-          #{scope.template_path}
-          namespace['#{scope.template_name}'] = template(#{hbsc});
-        })()
-        JS
-      end
+     
+      <<-JS
+      ;(function() {
+        var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
+        #{scope.template_path}
+        namespace['#{scope.template_name}'] = template(#{hbsc});
+      })()
+      JS
     end
 
     module Scope
@@ -53,7 +45,7 @@ module Handlebars
       end
 
       def template_name
-        File.basename(logical_path, '.hbs')
+        File.basename(logical_path, '.hbs').gsub(/_/,'')
       end
     end
   end
