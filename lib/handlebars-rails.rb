@@ -20,7 +20,6 @@ module Handlebars
     
     initializer "sprockets.handlebars", :after => "sprockets.environment", :group => :all do |app|
       next unless app.assets
-
       app.assets.append_path 'app/templates'
       app.assets.register_engine('.hbs', Tilt)
       logger = Logger.new(STDOUT)
